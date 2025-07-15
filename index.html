@@ -9,231 +9,173 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 1rem;
-        }
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
         }
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin: 10px 0;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
             transition: all 0.3s ease;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-        .btn-secondary {
-            background: #f3f4f6;
-            color: #374151;
-            border: 2px solid #d1d5db;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            margin: 8px 0;
-            transition: all 0.3s ease;
-        }
-        .btn-secondary:hover {
-            background: #e5e7eb;
-            border-color: #9ca3af;
-        }
-        .input-field {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 18px;
-            margin: 8px 0;
-            text-align: center;
-        }
-        .input-field:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        .photo-preview {
-            width: 100%;
-            max-width: 300px;
-            height: 200px;
-            border: 2px dashed #d1d5db;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 10px auto;
-            background: #f9fafb;
-        }
-        .photo-preview img {
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 6px;
-        }
-        .table-container {
-            overflow-x: auto;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        th {
-            background: #f3f4f6;
-            font-weight: bold;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
             border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #667eea;
-        }
-        .stat-label {
-            color: #6b7280;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .alert {
-            background: #fef3c7;
-            color: #92400e;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 15px;
             margin: 10px 0;
-            border-left: 4px solid #f59e0b;
-        }
-        .success {
-            background: #d1fae5;
-            color: #065f46;
-            padding: 12px;
             border-radius: 8px;
-            margin: 10px 0;
-            border-left: 4px solid #10b981;
+            font-size: 16px;
+            font-weight: bold;
         }
-        .hidden {
-            display: none;
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
-        @media (max-width: 768px) {
-            .container {
-                padding: 0.5rem;
-            }
-            .card {
-                padding: 1rem;
-            }
-            .btn-primary {
-                padding: 12px 20px;
-                font-size: 16px;
-            }
-            .input-field {
-                padding: 12px;
-                font-size: 16px;
-            }
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        input[type="number"] {
+            font-size: 18px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .stats-card {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="card text-center">
-            <h1 class="text-3xl font-bold text-gray-800 mb-4">
-                <i class="fas fa-gas-pump text-blue-600"></i> נעם 1
+<body class="p-4">
+    <div class="max-w-6xl mx-auto">
+        <!-- כותרת -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">
+                <i class="fas fa-gas-pump text-yellow-300"></i>
+                נעם 1 - מעקב תדלוק
             </h1>
-            <p class="text-gray-600 mb-6">מעקב תדלוק פשוט לכל המשפחה</p>
+            <p class="text-lg text-gray-200">מעקב פשוט ויעיל לצריכת דלק</p>
         </div>
 
-        <!-- תהליך התדלוק -->
-        <div class="card">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">
-                <i class="fas fa-plus-circle text-green-600"></i> תדלוק חדש
+        <!-- הודעות -->
+        <div id="messages"></div>
+
+        <!-- תיבת הוספת תדלוק -->
+        <div class="glass-effect rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">
+                <i class="fas fa-plus-circle text-green-500"></i>
+                הוספת תדלוק חדש
             </h2>
-            
-            <!-- שלב 1: צילום ספידומטר -->
-            <div class="mb-6">
-                <h3 class="text-lg font-semibold mb-3">שלב 1: צלמו ספידומטר</h3>
-                <button class="btn-primary" onclick="takePicture('odometer')">
-                    <i class="fas fa-camera"></i> צלמו ספידומטר
-                </button>
-                <div id="odometerPreview" class="photo-preview">
-                    <i class="fas fa-image text-gray-400 text-4xl"></i>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- צילום ספידומטר -->
+                <div class="text-center">
+                    <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                        <i class="fas fa-camera text-blue-500"></i>
+                        צלמו ספידומטר
+                    </h3>
+                    <input type="file" id="speedometerImage" accept="image/*" capture="environment" class="hidden">
+                    <button onclick="document.getElementById('speedometerImage').click()" class="btn-primary text-white px-6 py-3 rounded-lg font-bold text-lg w-full mb-3">
+                        <i class="fas fa-camera"></i> צלמו ספידומטר
+                    </button>
+                    <div id="speedometerPreview" class="mt-3"></div>
+                </div>
+
+                <!-- צילום משאבת דלק -->
+                <div class="text-center">
+                    <h3 class="text-lg font-semibold mb-3 text-gray-700">
+                        <i class="fas fa-camera text-red-500"></i>
+                        צלמו משאבת דלק
+                    </h3>
+                    <input type="file" id="pumpImage" accept="image/*" capture="environment" class="hidden">
+                    <button onclick="document.getElementById('pumpImage').click()" class="btn-primary text-white px-6 py-3 rounded-lg font-bold text-lg w-full mb-3">
+                        <i class="fas fa-camera"></i> צלמו משאבת דלק
+                    </button>
+                    <div id="pumpPreview" class="mt-3"></div>
                 </div>
             </div>
 
-            <!-- שלב 2: צילום משאבת דלק -->
-            <div class="mb-6">
-                <h3 class="text-lg font-semibold mb-3">שלב 2: צלמו משאבת דלק</h3>
-                <button class="btn-primary" onclick="takePicture('pump')">
-                    <i class="fas fa-camera"></i> צלמו משאבת דלק
-                </button>
-                <div id="pumpPreview" class="photo-preview">
-                    <i class="fas fa-image text-gray-400 text-4xl"></i>
+            <!-- הקלדת נתונים -->
+            <div class="mt-6 bg-white rounded-lg p-4">
+                <h3 class="text-lg font-semibold mb-4 text-gray-700 text-center">
+                    <i class="fas fa-keyboard text-purple-500"></i>
+                    הקלידו 3 מספרים
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="text-center">
+                        <label class="block text-sm font-medium text-gray-600 mb-2">ספידומטר (ק"מ)</label>
+                        <input type="number" id="kilometers" placeholder="למשל: 125000" class="w-full">
+                    </div>
+                    <div class="text-center">
+                        <label class="block text-sm font-medium text-gray-600 mb-2">ליטרים</label>
+                        <input type="number" step="0.01" id="liters" placeholder="למשל: 45.5" class="w-full">
+                    </div>
+                    <div class="text-center">
+                        <label class="block text-sm font-medium text-gray-600 mb-2">מחיר תדלוק (₪)</label>
+                        <input type="number" step="0.01" id="totalPrice" placeholder="למשל: 275.50" class="w-full">
+                    </div>
                 </div>
-            </div>
-
-            <!-- שלב 3: הקלדת נתונים -->
-            <div class="mb-6">
-                <h3 class="text-lg font-semibold mb-3">שלב 3: הקלידו 3 מספרים</h3>
-                <input type="number" id="odometer" class="input-field" placeholder="מספר ק״מ בספידומטר" step="0.1">
-                <input type="number" id="liters" class="input-field" placeholder="כמות ליטרים" step="0.01">
-                <input type="number" id="totalPrice" class="input-field" placeholder="מחיר תדלוק (₪)" step="0.01">
             </div>
 
             <!-- כפתור שמירה -->
-            <button class="btn-primary" onclick="saveFuelRecord()">
-                <i class="fas fa-save"></i> שמור תדלוק
-            </button>
-
-            <div id="message"></div>
+            <div class="text-center mt-6">
+                <button onclick="saveFuelEntry()" class="btn-primary text-white px-8 py-4 rounded-lg font-bold text-xl">
+                    <i class="fas fa-save"></i> שמור תדלוק
+                </button>
+            </div>
         </div>
 
         <!-- סטטיסטיקות -->
-        <div class="card">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">
-                <i class="fas fa-chart-line text-purple-600"></i> סטטיסטיקות
-            </h2>
-            <div class="stats-grid" id="statsGrid">
-                <!-- סטטיסטיקות יתווספו כאן -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="stats-card">
+                <div class="text-2xl font-bold" id="avgConsumption">0</div>
+                <div class="text-sm">ק"מ לליטר</div>
+            </div>
+            <div class="stats-card">
+                <div class="text-2xl font-bold" id="avgPricePerLiter">0</div>
+                <div class="text-sm">₪ לליטר</div>
+            </div>
+            <div class="stats-card">
+                <div class="text-2xl font-bold" id="monthlyEstimate">0</div>
+                <div class="text-sm">₪ לחודש</div>
+            </div>
+            <div class="stats-card">
+                <div class="text-2xl font-bold" id="avgDistance">0</div>
+                <div class="text-sm">ק"מ בין תדלוקים</div>
             </div>
         </div>
 
         <!-- גרף צריכת דלק -->
-        <div class="card">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">
-                <i class="fas fa-chart-area text-orange-600"></i> גרף צריכת דלק
+        <div class="glass-effect rounded-xl p-6 mb-8">
+            <h2 class="text-xl font-bold text-center mb-4 text-gray-800">
+                <i class="fas fa-chart-line text-blue-500"></i>
+                גרף צריכת דלק
             </h2>
             <div style="height: 400px;">
                 <canvas id="fuelChart"></canvas>
@@ -241,310 +183,372 @@
         </div>
 
         <!-- טבלת תדלוקים -->
-        <div class="card">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">
-                <i class="fas fa-table text-red-600"></i> היסטוריית תדלוקים
+        <div class="glass-effect rounded-xl p-6">
+            <h2 class="text-xl font-bold text-center mb-4 text-gray-800">
+                <i class="fas fa-table text-green-500"></i>
+                היסטוריית תדלוקים
             </h2>
             <div class="table-container">
-                <table id="fuelTable">
-                    <thead>
+                <table class="w-full bg-white rounded-lg overflow-hidden">
+                    <thead class="bg-gray-50">
                         <tr>
-                            <th>תאריך</th>
-                            <th>ק"מ</th>
-                            <th>מרחק</th>
-                            <th>ליטרים</th>
-                            <th>מחיר</th>
-                            <th>₪/ליטר</th>
-                            <th>ק"מ/ליטר</th>
-                            <th>פעולות</th>
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-600">תאריך</th>
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-600">ק"מ</th>
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-600">מרחק</th>
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-600">ליטרים</th>
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-600">מחיר כולל</th>
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-600">₪ לליטר</th>
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-600">ק"מ/ליטר</th>
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-600">פעולות</th>
                         </tr>
                     </thead>
                     <tbody id="fuelTableBody">
-                        <!-- רשומות יתווספו כאן -->
+                        <!-- תדלוקים יופיעו כאן -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Input file hidden for camera -->
-    <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
-
     <script>
-        let fuelRecords = [];
-        let currentPhotoType = null;
-        let odometerPhoto = null;
-        let pumpPhoto = null;
+        let fuelData = [];
+        let fuelChart;
+        let speedometerImageData = null;
+        let pumpImageData = null;
 
-        // טעינת נתונים מ-LocalStorage
-        function loadData() {
-            try {
-                const stored = localStorage.getItem('fuelRecords');
-                if (stored) {
-                    fuelRecords = JSON.parse(stored);
-                    updateTable();
-                    updateStats();
-                    updateChart();
-                }
-            } catch (error) {
-                console.error('Error loading data:', error);
-                fuelRecords = [];
-            }
-        }
+        // טעינת נתונים בעת הפעלת האפליקציה
+        window.onload = function() {
+            loadFuelData();
+            initChart();
+        };
 
-        // שמירת נתונים ב-LocalStorage
-        function saveData() {
+        // מנגנון שמירה מחוזק
+        function saveToStorage(key, data) {
             try {
-                localStorage.setItem('fuelRecords', JSON.stringify(fuelRecords));
+                const dataString = JSON.stringify(data);
+                
+                // נסיון 1: localStorage רגיל
+                localStorage.setItem(key, dataString);
+                
+                // נסיון 2: גיבוי בsessionStorage
+                sessionStorage.setItem(key + '_backup', dataString);
+                
+                // נסיון 3: גיבוי בקוקיס (למקרה הצורך)
+                document.cookie = `${key}=${encodeURIComponent(dataString)}; path=/; expires=Fri, 31 Dec 2025 23:59:59 GMT`;
+                
                 return true;
             } catch (error) {
-                console.error('Error saving data:', error);
-                showMessage('שגיאה בשמירת הנתונים', 'error');
+                console.error('שגיאה בשמירה:', error);
                 return false;
             }
         }
 
-        // צילום תמונה
-        function takePicture(type) {
-            currentPhotoType = type;
-            const input = document.getElementById('cameraInput');
-            input.click();
+        function loadFromStorage(key) {
+            try {
+                // נסיון 1: localStorage רגיל
+                let data = localStorage.getItem(key);
+                if (data) {
+                    return JSON.parse(data);
+                }
+                
+                // נסיון 2: גיבוי מsessionStorage
+                data = sessionStorage.getItem(key + '_backup');
+                if (data) {
+                    return JSON.parse(data);
+                }
+                
+                // נסיון 3: גיבוי מקוקיס
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    const [cookieName, cookieValue] = cookie.trim().split('=');
+                    if (cookieName === key) {
+                        return JSON.parse(decodeURIComponent(cookieValue));
+                    }
+                }
+                
+                return [];
+            } catch (error) {
+                console.error('שגיאה בטעינה:', error);
+                return [];
+            }
         }
 
-        // טיפול בתמונה שנצולמה
-        document.getElementById('cameraInput').addEventListener('change', function(e) {
+        function loadFuelData() {
+            fuelData = loadFromStorage('fuelData');
+            updateTable();
+            updateStats();
+            updateChart();
+        }
+
+        function showMessage(message, type = 'success') {
+            const messagesDiv = document.getElementById('messages');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            messagesDiv.innerHTML = `<div class="alert ${alertClass}">${message}</div>`;
+            
+            setTimeout(() => {
+                messagesDiv.innerHTML = '';
+            }, 3000);
+        }
+
+        // טיפול בתמונות
+        document.getElementById('speedometerImage').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imageData = e.target.result;
-                    const previewId = currentPhotoType === 'odometer' ? 'odometerPreview' : 'pumpPreview';
-                    const preview = document.getElementById(previewId);
-                    
-                    preview.innerHTML = `<img src="${imageData}" alt="${currentPhotoType}">`;
-                    
-                    if (currentPhotoType === 'odometer') {
-                        odometerPhoto = imageData;
-                    } else {
-                        pumpPhoto = imageData;
-                    }
+                reader.onload = function(event) {
+                    speedometerImageData = event.target.result;
+                    document.getElementById('speedometerPreview').innerHTML = 
+                        `<img src="${speedometerImageData}" alt="ספידומטר" class="image-preview mx-auto">`;
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        // שמירת רשומת תדלוק
-        function saveFuelRecord() {
-            const odometer = parseFloat(document.getElementById('odometer').value);
+        document.getElementById('pumpImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    pumpImageData = event.target.result;
+                    document.getElementById('pumpPreview').innerHTML = 
+                        `<img src="${pumpImageData}" alt="משאבת דלק" class="image-preview mx-auto">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function saveFuelEntry() {
+            const kilometers = parseFloat(document.getElementById('kilometers').value);
             const liters = parseFloat(document.getElementById('liters').value);
             const totalPrice = parseFloat(document.getElementById('totalPrice').value);
 
-            // בדיקת שדות חובה
-            if (!odometer || !liters || !totalPrice) {
+            // בדיקת נתונים
+            if (!kilometers || !liters || !totalPrice) {
                 showMessage('אנא מלאו את כל השדות', 'error');
                 return;
             }
 
-            if (odometer <= 0 || liters <= 0 || totalPrice <= 0) {
+            if (kilometers <= 0 || liters <= 0 || totalPrice <= 0) {
                 showMessage('אנא הכניסו מספרים חיוביים', 'error');
                 return;
             }
 
             // חישוב נתונים
-            const pricePerLiter = totalPrice / liters;
-            const lastRecord = fuelRecords[fuelRecords.length - 1];
+            const date = new Date().toLocaleDateString('he-IL');
+            const pricePerLiter = (totalPrice / liters).toFixed(2);
+            
             let distance = 0;
-            let kmPerLiter = 0;
-
-            if (lastRecord) {
-                distance = odometer - lastRecord.odometer;
+            let consumptionPerLiter = 0;
+            
+            if (fuelData.length > 0) {
+                const lastEntry = fuelData[fuelData.length - 1];
+                distance = kilometers - lastEntry.kilometers;
                 if (distance > 0) {
-                    kmPerLiter = distance / liters;
+                    consumptionPerLiter = (distance / liters).toFixed(2);
                 }
             }
 
-            // יצירת רשומה חדשה
-            const newRecord = {
+            const fuelEntry = {
                 id: Date.now(),
-                date: new Date().toLocaleDateString('he-IL'),
-                odometer: odometer,
+                date: date,
+                kilometers: kilometers,
                 distance: distance,
                 liters: liters,
                 totalPrice: totalPrice,
-                pricePerLiter: pricePerLiter,
-                kmPerLiter: kmPerLiter,
-                odometerPhoto: odometerPhoto,
-                pumpPhoto: pumpPhoto
+                pricePerLiter: parseFloat(pricePerLiter),
+                consumptionPerLiter: parseFloat(consumptionPerLiter),
+                speedometerImage: speedometerImageData,
+                pumpImage: pumpImageData
             };
 
-            // הוספת הרשומה
-            fuelRecords.push(newRecord);
-            
-            // שמירה
-            if (saveData()) {
+            fuelData.push(fuelEntry);
+
+            // שמירה מחוזקת
+            if (saveToStorage('fuelData', fuelData)) {
                 showMessage('התדלוק נשמר בהצלחה!', 'success');
-                clearForm();
+                
+                // איפוס הטופס
+                document.getElementById('kilometers').value = '';
+                document.getElementById('liters').value = '';
+                document.getElementById('totalPrice').value = '';
+                document.getElementById('speedometerPreview').innerHTML = '';
+                document.getElementById('pumpPreview').innerHTML = '';
+                speedometerImageData = null;
+                pumpImageData = null;
+                
+                // עדכון התצוגה
                 updateTable();
                 updateStats();
                 updateChart();
+            } else {
+                showMessage('שגיאה בשמירת הנתונים - אנא נסו שוב', 'error');
             }
         }
 
-        // ניקוי הטופס
-        function clearForm() {
-            document.getElementById('odometer').value = '';
-            document.getElementById('liters').value = '';
-            document.getElementById('totalPrice').value = '';
-            document.getElementById('odometerPreview').innerHTML = '<i class="fas fa-image text-gray-400 text-4xl"></i>';
-            document.getElementById('pumpPreview').innerHTML = '<i class="fas fa-image text-gray-400 text-4xl"></i>';
-            odometerPhoto = null;
-            pumpPhoto = null;
-        }
-
-        // עדכון טבלה
         function updateTable() {
             const tbody = document.getElementById('fuelTableBody');
             tbody.innerHTML = '';
 
-            fuelRecords.forEach(record => {
-                const row = document.createElement('tr');
+            fuelData.forEach(entry => {
+                const row = tbody.insertRow();
                 row.innerHTML = `
-                    <td>${record.date}</td>
-                    <td>${record.odometer.toLocaleString()}</td>
-                    <td>${record.distance > 0 ? record.distance.toLocaleString() : '-'}</td>
-                    <td>${record.liters.toFixed(2)}</td>
-                    <td>₪${record.totalPrice.toFixed(2)}</td>
-                    <td>₪${record.pricePerLiter.toFixed(2)}</td>
-                    <td>${record.kmPerLiter > 0 ? record.kmPerLiter.toFixed(2) : '-'}</td>
-                    <td>
-                        <button class="btn-secondary" onclick="deleteRecord(${record.id})" style="width: auto; padding: 8px 16px; margin: 0;">
+                    <td class="px-4 py-3 text-sm text-gray-900">${entry.date}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900">${entry.kilometers.toLocaleString()}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900">${entry.distance > 0 ? entry.distance.toLocaleString() : '-'}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900">${entry.liters}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900">₪${entry.totalPrice}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900">₪${entry.pricePerLiter}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900">${entry.consumptionPerLiter > 0 ? entry.consumptionPerLiter : '-'}</td>
+                    <td class="px-4 py-3 text-sm">
+                        <button onclick="viewImages(${entry.id})" class="text-blue-600 hover:text-blue-900 mr-2">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button onclick="deleteEntry(${entry.id})" class="text-red-600 hover:text-red-900">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
                 `;
-                tbody.appendChild(row);
             });
         }
 
-        // מחיקת רשומה
-        function deleteRecord(id) {
-            if (confirm('האם אתם בטוחים שברצונכם למחוק את הרשומה?')) {
-                fuelRecords = fuelRecords.filter(record => record.id !== id);
-                saveData();
-                updateTable();
-                updateStats();
-                updateChart();
-                showMessage('הרשומה נמחקה בהצלחה', 'success');
-            }
-        }
-
-        // עדכון סטטיסטיקות
         function updateStats() {
-            const statsGrid = document.getElementById('statsGrid');
+            if (fuelData.length === 0) return;
+
+            const validEntries = fuelData.filter(entry => entry.consumptionPerLiter > 0);
             
-            if (fuelRecords.length === 0) {
-                statsGrid.innerHTML = '<p class="text-gray-500 text-center">אין נתונים להצגה</p>';
-                return;
-            }
+            // ממוצע צריכת דלק
+            const avgConsumption = validEntries.length > 0 ? 
+                (validEntries.reduce((sum, entry) => sum + entry.consumptionPerLiter, 0) / validEntries.length).toFixed(1) : 0;
+            
+            // ממוצע מחיר לליטר
+            const avgPricePerLiter = (fuelData.reduce((sum, entry) => sum + entry.pricePerLiter, 0) / fuelData.length).toFixed(2);
+            
+            // ממוצע מרחק בין תדלוקים
+            const avgDistance = validEntries.length > 0 ? 
+                (validEntries.reduce((sum, entry) => sum + entry.distance, 0) / validEntries.length).toFixed(0) : 0;
+            
+            // הערכה חודשית (בהנחה של 1500 ק"מ לחודש)
+            const monthlyEstimate = avgConsumption > 0 ? 
+                ((1500 / avgConsumption) * avgPricePerLiter).toFixed(0) : 0;
 
-            const validRecords = fuelRecords.filter(r => r.kmPerLiter > 0);
-            const avgConsumption = validRecords.length > 0 ? 
-                validRecords.reduce((sum, r) => sum + r.kmPerLiter, 0) / validRecords.length : 0;
-
-            const totalDistance = fuelRecords.reduce((sum, r) => sum + r.distance, 0);
-            const totalCost = fuelRecords.reduce((sum, r) => sum + r.totalPrice, 0);
-            const avgDistance = fuelRecords.length > 1 ? totalDistance / (fuelRecords.length - 1) : 0;
-
-            const lastMonth = new Date();
-            lastMonth.setMonth(lastMonth.getMonth() - 1);
-            const monthlyRecords = fuelRecords.filter(r => new Date(r.date) >= lastMonth);
-            const monthlyCost = monthlyRecords.reduce((sum, r) => sum + r.totalPrice, 0);
-
-            statsGrid.innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-value">${avgConsumption.toFixed(1)}</div>
-                    <div class="stat-label">ממוצע ק"מ לליטר</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">₪${monthlyCost.toFixed(0)}</div>
-                    <div class="stat-label">עלות חודשית</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">${avgDistance.toFixed(0)}</div>
-                    <div class="stat-label">ממוצע מרחק בין תדלוקים</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">₪${totalCost.toFixed(0)}</div>
-                    <div class="stat-label">סה"כ הוצאות</div>
-                </div>
-            `;
+            document.getElementById('avgConsumption').textContent = avgConsumption;
+            document.getElementById('avgPricePerLiter').textContent = avgPricePerLiter;
+            document.getElementById('monthlyEstimate').textContent = monthlyEstimate;
+            document.getElementById('avgDistance').textContent = avgDistance;
         }
 
-        // עדכון גרף
-        function updateChart() {
+        function initChart() {
             const ctx = document.getElementById('fuelChart').getContext('2d');
-            const validRecords = fuelRecords.filter(r => r.kmPerLiter > 0);
-            
-            if (window.fuelChart) {
-                window.fuelChart.destroy();
-            }
-
-            window.fuelChart = new Chart(ctx, {
+            fuelChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: validRecords.map(r => r.date),
+                    labels: [],
                     datasets: [{
-                        label: 'ק"מ לליטר',
-                        data: validRecords.map(r => r.kmPerLiter),
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4
+                        label: 'צריכת דלק (ק"מ לליטר)',
+                        data: [],
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1
+                    }, {
+                        label: 'מחיר לליטר (₪)',
+                        data: [],
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        tension: 0.1,
+                        yAxisID: 'y1'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'ק"מ לליטר'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'תאריך'
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
                             }
                         }
                     },
-                    plugins: {
-                        legend: {
+                    scales: {
+                        y: {
+                            type: 'linear',
                             display: true,
-                            position: 'top'
+                            position: 'left',
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false,
+                            },
                         }
                     }
                 }
             });
         }
 
-        // הצגת הודעה
-        function showMessage(text, type) {
-            const messageDiv = document.getElementById('message');
-            messageDiv.innerHTML = `<div class="${type === 'error' ? 'alert' : 'success'}">${text}</div>`;
-            setTimeout(() => {
-                messageDiv.innerHTML = '';
-            }, 3000);
+        function updateChart() {
+            if (!fuelChart) return;
+
+            const validEntries = fuelData.filter(entry => entry.consumptionPerLiter > 0);
+            
+            fuelChart.data.labels = validEntries.map(entry => entry.date);
+            fuelChart.data.datasets[0].data = validEntries.map(entry => entry.consumptionPerLiter);
+            fuelChart.data.datasets[1].data = validEntries.map(entry => entry.pricePerLiter);
+            fuelChart.update();
         }
 
-        // טעינת הנתונים בהפעלה
-        window.addEventListener('load', loadData);
-        
-        // שמירה אוטומטית לפני סגירת הדפדפן
-        window.addEventListener('beforeunload', saveData);
+        function viewImages(id) {
+            const entry = fuelData.find(item => item.id === id);
+            if (entry) {
+                let imagesHtml = '<div style="text-align: center;">';
+                
+                if (entry.speedometerImage) {
+                    imagesHtml += `<div style="margin: 20px;"><h3>ספידומטר</h3><img src="${entry.speedometerImage}" style="max-width: 300px; max-height: 300px; border-radius: 10px;"></div>`;
+                }
+                
+                if (entry.pumpImage) {
+                    imagesHtml += `<div style="margin: 20px;"><h3>משאבת דלק</h3><img src="${entry.pumpImage}" style="max-width: 300px; max-height: 300px; border-radius: 10px;"></div>`;
+                }
+                
+                imagesHtml += '</div>';
+                
+                const newWindow = window.open('', '_blank', 'width=800,height=600');
+                newWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html dir="rtl">
+                    <head>
+                        <title>תמונות תדלוק - ${entry.date}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; padding: 20px; }
+                            h3 { color: #333; margin-bottom: 10px; }
+                        </style>
+                    </head>
+                    <body>
+                        <h2>תמונות תדלוק - ${entry.date}</h2>
+                        ${imagesHtml}
+                        <button onclick="window.close()" style="padding: 10px 20px; background: #007cba; color: white; border: none; border-radius: 5px; cursor: pointer;">סגור</button>
+                    </body>
+                    </html>
+                `);
+            }
+        }
+
+        function deleteEntry(id) {
+            if (confirm('האם אתם בטוחים שברצונכם למחוק את התדלוק?')) {
+                fuelData = fuelData.filter(entry => entry.id !== id);
+                if (saveToStorage('fuelData', fuelData)) {
+                    showMessage('התדלוק נמחק בהצלחה', 'success');
+                    updateTable();
+                    updateStats();
+                    updateChart();
+                } else {
+                    showMessage('שגיאה במחיקת הנתונים', 'error');
+                }
+            }
+        }
     </script>
 </body>
 </html>
