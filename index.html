@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -7,7 +6,6 @@
     <title>נעם 1 - מעקב תדלוק לרכב</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -15,247 +13,192 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-        .card {
-            background: white;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 30px;
-            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
         .btn-primary {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            margin: 10px 0;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            transition: all 0.3s ease;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
         }
         .btn-secondary {
-            background: linear-gradient(45deg, #2196F3, #1976D2);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin: 5px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         }
         .btn-secondary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
         }
-        .input-field {
-            width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            border: 2px solid #e0e0e0;
+        .preview-img {
+            max-width: 200px;
+            max-height: 150px;
             border-radius: 10px;
-            margin: 10px 0;
+            border: 3px solid #e5e7eb;
+        }
+        input[type="number"] {
+            font-size: 1.5rem;
+            padding: 1rem;
+            border: 3px solid #e5e7eb;
+            border-radius: 15px;
             text-align: center;
         }
-        .input-field:focus {
+        input[type="number"]:focus {
+            border-color: #4f46e5;
             outline: none;
-            border-color: #4CAF50;
-            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
-        }
-        .photo-preview {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 10px;
-            border: 3px solid #4CAF50;
-            margin: 10px 0;
-        }
-        .status-message {
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            text-align: center;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .status-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .status-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .status-info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
         }
         .table-container {
-            overflow-x: auto;
-            border-radius: 10px;
-            border: 1px solid #e0e0e0;
+            max-height: 400px;
+            overflow-y: auto;
         }
         table {
-            width: 100%;
-            border-collapse: collapse;
+            font-size: 1.1rem;
         }
         th, td {
             padding: 12px;
             text-align: center;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 2px solid #e5e7eb;
         }
         th {
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
             font-weight: bold;
-            color: #333;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
+        .stats-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 10px 0;
+            border: 2px solid #f59e0b;
         }
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .stat-label {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        .hidden {
-            display: none;
-        }
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .chart-container {
+            height: 300px;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body class="p-4">
     <div class="max-w-6xl mx-auto">
         <!-- Header -->
-        <div class="card text-center">
+        <div class="glass-card p-6 mb-6 text-center">
             <h1 class="text-4xl font-bold text-gray-800 mb-2">
-                <i class="fas fa-gas-pump text-blue-600"></i>
-                נעם 1
+                <i class="fas fa-gas-pump text-blue-600 mr-3"></i>
+                נעם 1 - מעקב תדלוק לרכב
             </h1>
-            <p class="text-xl text-gray-600">מעקב תדלוק פשוט לכל המשפחה</p>
+            <p class="text-xl text-gray-600">מעקב פשוט וקל לכל המשפחה</p>
         </div>
 
-        <!-- Main Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Left Column - Add New Fuel -->
-            <div class="card">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">
-                    <i class="fas fa-plus-circle text-green-600"></i>
-                    תדלוק חדש
-                </h2>
-
-                <div id="step1" class="step-section">
-                    <h3 class="text-xl font-semibold mb-4 text-gray-700">שלב 1: צלמו את הספידומטר</h3>
-                    <input type="file" id="speedometerPhoto" accept="image/*" capture="environment" class="hidden">
-                    <button onclick="document.getElementById('speedometerPhoto').click()" class="btn-primary">
-                        <i class="fas fa-camera"></i>
-                        צלמו ספידומטר
-                    </button>
-                    <div id="speedometerPreview"></div>
-                    <div id="speedometerStatus"></div>
-                    <div id="speedometerInput" class="hidden">
-                        <label class="block text-lg font-medium text-gray-700 mb-2">ק"מ נוכחי:</label>
-                        <input type="number" id="currentKm" class="input-field" placeholder="הכניסו את מספר הק"מ">
-                        <button onclick="proceedToStep2()" class="btn-secondary">
-                            <i class="fas fa-arrow-left"></i>
-                            המשך לשלב 2
-                        </button>
+        <!-- Add New Fuel Entry -->
+        <div class="glass-card p-6 mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                <i class="fas fa-plus-circle text-green-600 mr-2"></i>
+                תדלוק חדש
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Photo Section -->
+                <div class="space-y-6">
+                    <div class="text-center">
+                        <h3 class="text-xl font-semibold mb-4">📸 צילום תמונות</h3>
+                        
+                        <!-- Speedometer Photo -->
+                        <div class="mb-6">
+                            <button id="speedometerBtn" class="btn-primary text-white px-8 py-4 rounded-2xl text-xl font-semibold w-full mb-4">
+                                <i class="fas fa-camera mr-2"></i>
+                                צלמו ספידומטר
+                            </button>
+                            <input type="file" id="speedometerInput" accept="image/*" capture="environment" class="hidden">
+                            <div id="speedometerPreview" class="text-center"></div>
+                        </div>
+                        
+                        <!-- Fuel Pump Photo -->
+                        <div class="mb-6">
+                            <button id="fuelPumpBtn" class="btn-secondary text-white px-8 py-4 rounded-2xl text-xl font-semibold w-full mb-4">
+                                <i class="fas fa-camera mr-2"></i>
+                                צלמו משאבת דלק לאחר תדלוק
+                            </button>
+                            <input type="file" id="fuelPumpInput" accept="image/*" capture="environment" class="hidden">
+                            <div id="fuelPumpPreview" class="text-center"></div>
+                        </div>
                     </div>
                 </div>
 
-                <div id="step2" class="step-section hidden">
-                    <h3 class="text-xl font-semibold mb-4 text-gray-700">שלב 2: צלמו את משאבת הדלק</h3>
-                    <input type="file" id="pumpPhoto" accept="image/*" capture="environment" class="hidden">
-                    <button onclick="document.getElementById('pumpPhoto').click()" class="btn-primary">
-                        <i class="fas fa-camera"></i>
-                        צלמו משאבת דלק
-                    </button>
-                    <div id="pumpPreview"></div>
-                    <div id="pumpStatus"></div>
-                    <div id="pumpInput" class="hidden">
-                        <label class="block text-lg font-medium text-gray-700 mb-2">ליטרים:</label>
-                        <input type="number" step="0.1" id="liters" class="input-field" placeholder="כמות ליטרים">
-                        <label class="block text-lg font-medium text-gray-700 mb-2">מחיר כולל:</label>
-                        <input type="number" step="0.01" id="totalPrice" class="input-field" placeholder="מחיר כולל בש״ח">
-                        <button onclick="saveFuelRecord()" class="btn-primary">
-                            <i class="fas fa-save"></i>
+                <!-- Manual Input Section -->
+                <div class="space-y-6">
+                    <div class="text-center">
+                        <h3 class="text-xl font-semibold mb-4">⌨️ הקלידו 3 מספרים</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-lg font-semibold mb-2">1. ספידומטר (ק"מ)</label>
+                                <input type="number" id="kmInput" placeholder="למשל: 125000" class="w-full">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-lg font-semibold mb-2">2. ליטרים</label>
+                                <input type="number" id="litersInput" step="0.01" placeholder="למשל: 45.5" class="w-full">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-lg font-semibold mb-2">3. מחיר תדלוק (₪)</label>
+                                <input type="number" id="priceInput" step="0.01" placeholder="למשל: 280.50" class="w-full">
+                            </div>
+                        </div>
+                        
+                        <button id="saveBtn" class="btn-primary text-white px-12 py-4 rounded-2xl text-xl font-semibold mt-6 w-full">
+                            <i class="fas fa-save mr-2"></i>
                             שמור תדלוק
                         </button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Right Column - Statistics -->
-            <div class="card">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">
-                    <i class="fas fa-chart-bar text-purple-600"></i>
-                    סטטיסטיקות
-                </h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value" id="avgConsumption">-</div>
-                        <div class="stat-label">ממוצע צריכה (ק"מ לליטר)</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="avgPricePerLiter">-</div>
-                        <div class="stat-label">מחיר ממוצע לליטר</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="monthlyEstimate">-</div>
-                        <div class="stat-label">הוצאה חודשית משוערת</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="avgDistance">-</div>
-                        <div class="stat-label">מרחק ממוצע בין תדלוקים</div>
-                    </div>
+        <!-- Statistics -->
+        <div class="glass-card p-6 mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                סטטיסטיקות
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="stats-card text-center">
+                    <div class="text-3xl font-bold text-orange-700" id="avgConsumption">--</div>
+                    <div class="text-lg font-semibold">ממוצע ק"מ לליטר</div>
                 </div>
-                <div style="height: 300px;">
-                    <canvas id="consumptionChart"></canvas>
+                
+                <div class="stats-card text-center">
+                    <div class="text-3xl font-bold text-orange-700" id="avgDistance">--</div>
+                    <div class="text-lg font-semibold">מרחק ממוצע בין תדלוקים</div>
                 </div>
+                
+                <div class="stats-card text-center">
+                    <div class="text-3xl font-bold text-orange-700" id="monthlyCost">--</div>
+                    <div class="text-lg font-semibold">עלות חודשית משוערת</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="consumptionChart"></canvas>
             </div>
         </div>
 
-        <!-- Fuel History Table -->
-        <div class="card">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">
-                <i class="fas fa-history text-indigo-600"></i>
+        <!-- Fuel Records Table -->
+        <div class="glass-card p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                <i class="fas fa-table text-purple-600 mr-2"></i>
                 היסטוריית תדלוקים
             </h2>
+            
             <div class="table-container">
-                <table id="fuelTable">
+                <table class="w-full" id="fuelTable">
                     <thead>
                         <tr>
                             <th>תאריך</th>
@@ -270,7 +213,7 @@
                     </thead>
                     <tbody id="fuelTableBody">
                         <tr>
-                            <td colspan="8" class="text-center text-gray-500 py-8">אין נתונים עדיין</td>
+                            <td colspan="8" class="text-center text-gray-500 py-8">אין תדלוקים עדיין</td>
                         </tr>
                     </tbody>
                 </table>
@@ -280,270 +223,192 @@
 
     <script>
         // Global variables
-        let fuelRecords = JSON.parse(localStorage.getItem('fuelRecords') || '[]');
-        let currentKmValue = 0;
+        let fuelRecords = JSON.parse(localStorage.getItem('fuelRecords')) || [];
+        let currentSpeedometerImage = null;
+        let currentFuelPumpImage = null;
         let consumptionChart = null;
 
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
-            loadFuelRecords();
+            setupEventListeners();
+            displayFuelRecords();
             updateStatistics();
-            initializeChart();
+            createChart();
         });
 
-        // Photo handlers
-        document.getElementById('speedometerPhoto').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                processSpeedometerPhoto(file);
-            }
-        });
-
-        document.getElementById('pumpPhoto').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                processPumpPhoto(file);
-            }
-        });
-
-        // Process speedometer photo
-        function processSpeedometerPhoto(file) {
-            const preview = document.getElementById('speedometerPreview');
-            const status = document.getElementById('speedometerStatus');
-            const input = document.getElementById('speedometerInput');
-
-            // Show preview
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            img.className = 'photo-preview';
-            preview.innerHTML = '';
-            preview.appendChild(img);
-
-            // Show processing status
-            status.innerHTML = '<div class="status-info"><div class="loading"></div> מעבד תמונה...</div>';
-            input.classList.add('hidden');
-
-            // Process with OCR
-            Tesseract.recognize(file, 'eng', {
-                logger: m => console.log(m)
-            }).then(({ data: { text } }) => {
-                console.log('OCR Result:', text);
-                
-                // Extract numbers from text
-                const numbers = text.match(/\d+/g);
-                let detectedKm = 0;
-                
-                if (numbers && numbers.length > 0) {
-                    // Find the largest number (likely to be km)
-                    detectedKm = Math.max(...numbers.map(n => parseInt(n)));
-                }
-
-                status.innerHTML = '<div class="status-success">תמונה עובדה בהצלחה!</div>';
-                document.getElementById('currentKm').value = detectedKm;
-                input.classList.remove('hidden');
-            }).catch(err => {
-                console.error('OCR Error:', err);
-                status.innerHTML = '<div class="status-error">שגיאה בעיבוד התמונה. אנא הכניסו את הנתונים ידנית.</div>';
-                input.classList.remove('hidden');
+        function setupEventListeners() {
+            // Photo buttons
+            document.getElementById('speedometerBtn').addEventListener('click', () => {
+                document.getElementById('speedometerInput').click();
             });
-        }
-
-        // Process pump photo
-        function processPumpPhoto(file) {
-            const preview = document.getElementById('pumpPreview');
-            const status = document.getElementById('pumpStatus');
-            const input = document.getElementById('pumpInput');
-
-            // Show preview
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            img.className = 'photo-preview';
-            preview.innerHTML = '';
-            preview.appendChild(img);
-
-            // Show processing status
-            status.innerHTML = '<div class="status-info"><div class="loading"></div> מעבד תמונה...</div>';
-            input.classList.add('hidden');
-
-            // Process with OCR
-            Tesseract.recognize(file, 'eng', {
-                logger: m => console.log(m)
-            }).then(({ data: { text } }) => {
-                console.log('OCR Result:', text);
-                
-                // Extract numbers from text
-                const numbers = text.match(/\d+\.?\d*/g);
-                let detectedLiters = 0;
-                let detectedPrice = 0;
-                
-                if (numbers && numbers.length >= 2) {
-                    // Sort numbers by value to identify liters and price
-                    const sortedNumbers = numbers.map(n => parseFloat(n)).sort((a, b) => a - b);
-                    detectedLiters = sortedNumbers[0]; // Smaller number likely to be liters
-                    detectedPrice = sortedNumbers[sortedNumbers.length - 1]; // Larger number likely to be price
-                }
-
-                status.innerHTML = '<div class="status-success">תמונה עובדה בהצלחה!</div>';
-                document.getElementById('liters').value = detectedLiters;
-                document.getElementById('totalPrice').value = detectedPrice;
-                input.classList.remove('hidden');
-            }).catch(err => {
-                console.error('OCR Error:', err);
-                status.innerHTML = '<div class="status-error">שגיאה בעיבוד התמונה. אנא הכניסו את הנתונים ידנית.</div>';
-                input.classList.remove('hidden');
-            });
-        }
-
-        // Proceed to step 2
-        function proceedToStep2() {
-            const kmInput = document.getElementById('currentKm');
-            if (!kmInput.value || kmInput.value <= 0) {
-                alert('אנא הכניסו מספר ק"מ תקין');
-                return;
-            }
-
-            currentKmValue = parseInt(kmInput.value);
-            document.getElementById('step1').classList.add('hidden');
-            document.getElementById('step2').classList.remove('hidden');
-        }
-
-        // Save fuel record
-        function saveFuelRecord() {
-            const liters = parseFloat(document.getElementById('liters').value);
-            const totalPrice = parseFloat(document.getElementById('totalPrice').value);
-
-            if (!liters || !totalPrice || liters <= 0 || totalPrice <= 0) {
-                alert('אנא הכניסו נתונים תקינים');
-                return;
-            }
-
-            const currentDate = new Date().toLocaleDateString('he-IL');
-            const pricePerLiter = totalPrice / liters;
             
-            // Calculate distance and consumption
+            document.getElementById('fuelPumpBtn').addEventListener('click', () => {
+                document.getElementById('fuelPumpInput').click();
+            });
+
+            // Photo inputs
+            document.getElementById('speedometerInput').addEventListener('change', handleSpeedometerPhoto);
+            document.getElementById('fuelPumpInput').addEventListener('change', handleFuelPumpPhoto);
+
+            // Save button
+            document.getElementById('saveBtn').addEventListener('click', saveFuelRecord);
+        }
+
+        function handleSpeedometerPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentSpeedometerImage = e.target.result;
+                    const preview = document.getElementById('speedometerPreview');
+                    preview.innerHTML = `
+                        <img src="${e.target.result}" class="preview-img mx-auto">
+                        <p class="text-green-600 font-semibold mt-2">✓ תמונת ספידומטר נשמרה</p>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleFuelPumpPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentFuelPumpImage = e.target.result;
+                    const preview = document.getElementById('fuelPumpPreview');
+                    preview.innerHTML = `
+                        <img src="${e.target.result}" class="preview-img mx-auto">
+                        <p class="text-green-600 font-semibold mt-2">✓ תמונת משאבה נשמרה</p>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveFuelRecord() {
+            const km = parseFloat(document.getElementById('kmInput').value);
+            const liters = parseFloat(document.getElementById('litersInput').value);
+            const price = parseFloat(document.getElementById('priceInput').value);
+
+            // Validation
+            if (!km || !liters || !price) {
+                alert('אנא מלאו את כל השדות');
+                return;
+            }
+
+            if (!currentSpeedometerImage || !currentFuelPumpImage) {
+                alert('אנא צלמו את הספידומטר ואת משאבת הדלק');
+                return;
+            }
+
+            // Calculate values
+            const date = new Date().toLocaleDateString('he-IL');
+            const pricePerLiter = price / liters;
+            
             let distance = 0;
             let consumption = 0;
-            let previousKm = 0;
-
+            
             if (fuelRecords.length > 0) {
-                previousKm = fuelRecords[fuelRecords.length - 1].currentKm;
-                distance = currentKmValue - previousKm;
-                consumption = distance / liters;
+                const lastRecord = fuelRecords[fuelRecords.length - 1];
+                distance = km - lastRecord.km;
+                if (distance > 0) {
+                    consumption = distance / liters;
+                }
             }
 
+            // Create new record
             const newRecord = {
-                date: currentDate,
-                currentKm: currentKmValue,
-                previousKm: previousKm,
+                id: Date.now(),
+                date: date,
+                km: km,
                 distance: distance,
                 liters: liters,
-                totalPrice: totalPrice,
+                price: price,
                 pricePerLiter: pricePerLiter,
                 consumption: consumption,
-                timestamp: Date.now()
+                speedometerImage: currentSpeedometerImage,
+                fuelPumpImage: currentFuelPumpImage
             };
 
+            // Add to records
             fuelRecords.push(newRecord);
             localStorage.setItem('fuelRecords', JSON.stringify(fuelRecords));
 
-            // Reset form
-            resetForm();
-            loadFuelRecords();
+            // Clear form
+            clearForm();
+            
+            // Update display
+            displayFuelRecords();
             updateStatistics();
             updateChart();
 
             alert('תדלוק נשמר בהצלחה!');
         }
 
-        // Reset form
-        function resetForm() {
-            document.getElementById('step1').classList.remove('hidden');
-            document.getElementById('step2').classList.add('hidden');
+        function clearForm() {
+            document.getElementById('kmInput').value = '';
+            document.getElementById('litersInput').value = '';
+            document.getElementById('priceInput').value = '';
             document.getElementById('speedometerPreview').innerHTML = '';
-            document.getElementById('pumpPreview').innerHTML = '';
-            document.getElementById('speedometerStatus').innerHTML = '';
-            document.getElementById('pumpStatus').innerHTML = '';
-            document.getElementById('speedometerInput').classList.add('hidden');
-            document.getElementById('pumpInput').classList.add('hidden');
-            document.getElementById('currentKm').value = '';
-            document.getElementById('liters').value = '';
-            document.getElementById('totalPrice').value = '';
-            currentKmValue = 0;
+            document.getElementById('fuelPumpPreview').innerHTML = '';
+            currentSpeedometerImage = null;
+            currentFuelPumpImage = null;
         }
 
-        // Load fuel records
-        function loadFuelRecords() {
-            const tableBody = document.getElementById('fuelTableBody');
+        function displayFuelRecords() {
+            const tbody = document.getElementById('fuelTableBody');
             
             if (fuelRecords.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="8" class="text-center text-gray-500 py-8">אין נתונים עדיין</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-gray-500 py-8">אין תדלוקים עדיין</td></tr>';
                 return;
             }
 
-            tableBody.innerHTML = fuelRecords.map((record, index) => `
+            tbody.innerHTML = fuelRecords.map(record => `
                 <tr>
                     <td>${record.date}</td>
-                    <td>${record.currentKm.toLocaleString()}</td>
-                    <td>${record.distance > 0 ? record.distance.toLocaleString() : '-'}</td>
-                    <td>${record.liters.toFixed(1)}</td>
-                    <td>₪${record.totalPrice.toFixed(2)}</td>
+                    <td>${record.km.toLocaleString()}</td>
+                    <td>${record.distance > 0 ? record.distance.toLocaleString() : '--'}</td>
+                    <td>${record.liters.toFixed(2)}</td>
+                    <td>₪${record.price.toFixed(2)}</td>
                     <td>₪${record.pricePerLiter.toFixed(2)}</td>
-                    <td>${record.consumption > 0 ? record.consumption.toFixed(1) : '-'}</td>
+                    <td>${record.consumption > 0 ? record.consumption.toFixed(2) : '--'}</td>
                     <td>
-                        <button onclick="deleteRecord(${index})" class="btn-secondary bg-red-500 hover:bg-red-600 text-xs px-2 py-1">
+                        <button onclick="viewImages(${record.id})" class="text-blue-600 hover:text-blue-800 mr-2">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button onclick="deleteRecord(${record.id})" class="text-red-600 hover:text-red-800">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
                 </tr>
-            `).reverse().join('');
+            `).join('');
         }
 
-        // Delete record
-        function deleteRecord(index) {
-            if (confirm('האם אתם בטוחים שברצונכם למחוק את הרשומה?')) {
-                fuelRecords.splice(index, 1);
-                localStorage.setItem('fuelRecords', JSON.stringify(fuelRecords));
-                loadFuelRecords();
-                updateStatistics();
-                updateChart();
-            }
-        }
-
-        // Update statistics
         function updateStatistics() {
-            if (fuelRecords.length === 0) {
-                document.getElementById('avgConsumption').textContent = '-';
-                document.getElementById('avgPricePerLiter').textContent = '-';
-                document.getElementById('monthlyEstimate').textContent = '-';
-                document.getElementById('avgDistance').textContent = '-';
+            if (fuelRecords.length < 2) {
+                document.getElementById('avgConsumption').textContent = '--';
+                document.getElementById('avgDistance').textContent = '--';
+                document.getElementById('monthlyCost').textContent = '--';
                 return;
             }
 
             // Calculate averages
-            const validConsumptions = fuelRecords.filter(r => r.consumption > 0);
-            const avgConsumption = validConsumptions.length > 0 ? 
-                validConsumptions.reduce((sum, r) => sum + r.consumption, 0) / validConsumptions.length : 0;
+            const consumptionRecords = fuelRecords.filter(r => r.consumption > 0);
+            const avgConsumption = consumptionRecords.reduce((sum, r) => sum + r.consumption, 0) / consumptionRecords.length;
             
-            const avgPricePerLiter = fuelRecords.reduce((sum, r) => sum + r.pricePerLiter, 0) / fuelRecords.length;
+            const distanceRecords = fuelRecords.filter(r => r.distance > 0);
+            const avgDistance = distanceRecords.reduce((sum, r) => sum + r.distance, 0) / distanceRecords.length;
             
-            const validDistances = fuelRecords.filter(r => r.distance > 0);
-            const avgDistance = validDistances.length > 0 ? 
-                validDistances.reduce((sum, r) => sum + r.distance, 0) / validDistances.length : 0;
+            const avgPrice = fuelRecords.reduce((sum, r) => sum + r.price, 0) / fuelRecords.length;
+            const monthlyCost = (avgPrice * 30) / (avgDistance / 1000 * 30); // Rough estimate
 
-            // Calculate monthly estimate
-            const recentRecords = fuelRecords.slice(-5); // Last 5 records
-            const avgMonthlySpending = recentRecords.length > 0 ? 
-                (recentRecords.reduce((sum, r) => sum + r.totalPrice, 0) / recentRecords.length) * 4 : 0;
-
-            // Update display
-            document.getElementById('avgConsumption').textContent = avgConsumption > 0 ? avgConsumption.toFixed(1) : '-';
-            document.getElementById('avgPricePerLiter').textContent = avgPricePerLiter > 0 ? `₪${avgPricePerLiter.toFixed(2)}` : '-';
-            document.getElementById('monthlyEstimate').textContent = avgMonthlySpending > 0 ? `₪${avgMonthlySpending.toFixed(0)}` : '-';
-            document.getElementById('avgDistance').textContent = avgDistance > 0 ? `${avgDistance.toFixed(0)} ק"מ` : '-';
+            document.getElementById('avgConsumption').textContent = avgConsumption.toFixed(2);
+            document.getElementById('avgDistance').textContent = avgDistance.toFixed(0);
+            document.getElementById('monthlyCost').textContent = `₪${monthlyCost.toFixed(0)}`;
         }
 
-        // Initialize chart
-        function initializeChart() {
+        function createChart() {
             const ctx = document.getElementById('consumptionChart').getContext('2d');
             
             consumptionChart = new Chart(ctx, {
@@ -577,39 +442,78 @@
                         }
                     },
                     plugins: {
-                        title: {
+                        legend: {
                             display: true,
-                            text: 'מגמת צריכת דלק'
+                            position: 'top'
                         }
                     }
                 }
             });
-
+            
             updateChart();
         }
 
-        // Update chart
         function updateChart() {
             if (!consumptionChart) return;
-
-            const validRecords = fuelRecords.filter(r => r.consumption > 0);
-            const labels = validRecords.map(r => r.date);
-            const data = validRecords.map(r => r.consumption);
-
-            consumptionChart.data.labels = labels;
-            consumptionChart.data.datasets[0].data = data;
+            
+            const consumptionData = fuelRecords.filter(r => r.consumption > 0);
+            
+            consumptionChart.data.labels = consumptionData.map(r => r.date);
+            consumptionChart.data.datasets[0].data = consumptionData.map(r => r.consumption);
             consumptionChart.update();
         }
+
+        function viewImages(recordId) {
+            const record = fuelRecords.find(r => r.id === recordId);
+            if (!record) return;
+
+            const modalHtml = `
+                <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div class="bg-white rounded-lg max-w-4xl max-h-full overflow-y-auto">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-4">תמונות תדלוק מיום ${record.date}</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="text-center">
+                                    <h4 class="font-semibold mb-2">ספידומטר</h4>
+                                    <img src="${record.speedometerImage}" class="max-w-full max-h-96 mx-auto rounded-lg">
+                                </div>
+                                <div class="text-center">
+                                    <h4 class="font-semibold mb-2">משאבת דלק</h4>
+                                    <img src="${record.fuelPumpImage}" class="max-w-full max-h-96 mx-auto rounded-lg">
+                                </div>
+                            </div>
+                            <button onclick="closeModal()" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
+                                סגור
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            if (modal) modal.remove();
+        }
+
+        function deleteRecord(recordId) {
+            if (confirm('האם אתם בטוחים שברצונכם למחוק את הרשומה?')) {
+                fuelRecords = fuelRecords.filter(r => r.id !== recordId);
+                localStorage.setItem('fuelRecords', JSON.stringify(fuelRecords));
+                displayFuelRecords();
+                updateStatistics();
+                updateChart();
+            }
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            if (event.target.id === 'imageModal') {
+                closeModal();
+            }
+        });
     </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"95fa5842ae4ff60d","serverTiming":{"name":{"cfExtPri":true,"cfEdge":true,"cfOrigin":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.6.2","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
 </body>
 </html>
-    <script id="html_badge_script1">
-        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
-            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDvv7u9PaF3HsxIzNU4t%2FFPsSC96dJO1HP3ixEfq9%2BaothBpZaHHupB1Vv2qRdov7bgm2wAY04RZ2SPpLs7cIgcww9MCL2YPEy1erfIABs0Ip8LP1Y3%2FTNKbKAapoSzpd1kleOxlkEsE%2BuU1QyC873QQArbbLxGvQ%2BIWL5tmaNHCURs8V4YKhpHJJjfl%2FQ6aQ%2BIkOuP0Xdat2GMEi4mkVYZAMDaTNFA47dTL76yKoHtA4wbiq6okU6g4cD2kMn7MTXXH8HPCMbGTk9dbL7Uu16lj8cITLT8xZwqRlmTHPB4%2Fuc164M%2BPJlP9dgP6k3A0zq5eWno9jHLzOdYWxMF26zOEVsYPCQqQLkFH4hdE%2FdaeoeyHOCW66U9WjeEFslBqUMfIVfxxEF7E612Rs7VD9lNmJ3UkiSQFEC0UZBxHSs3Nv%2Bg9Hakse54ZEEd3zlVs3b0%2BxLFNC1I1k53NvwbhClcaojufQSYndqwWeMY3hDz%2BOws17zfzNztqABOPPshk8tw%3D%3D";
-        window.__genspark_locale = "en-US";
-        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDvv7u9PaF3HsxIzNU4t/FPsSC96dJO1HP3ixEfq9+aothBpZaHHupB1Vv2qRdov7bgm2wAY04RZ2SPpLs7cIgcww9MCL2YPEy1erfIABs0Ip8LP1Y3/TNKbKAapoSzpd1kleOxlkEsE+uU1QyC873QQArbbLxGvQ+IWL5tmaNHCURs8V4YKhpHJJjfl/Q6aQ+IkOuP0Xdat2GMEi4mkVYZAMDaTNFA47dTL76yKoHtA4wbiq6okU6g4cD2kMn7MTXXH8HPCMbGTk9dbL7Uu16lj8cITLT8xZwqRlmTHPB4/uc164M+PJlP9dgP6k3A0zq5eWno9jHLzOdYWxMF26zOEVsYPCQqQLkFH4hdE/daeoeyHOCW66U9WjeEFslBqUMfIVfxxEF7E612Rs7VD9lNmJ3UkiSQFEC0UZBxHSs3Nv+g9Hakse54ZEEd3zlVs3b0+xLFNC1I1k53NvwbhClcaojufQSYndqwWeMY3hDz+Ows17zfzNztqABOPPshk8tw==";
-    </script>
-    
-    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
-    
